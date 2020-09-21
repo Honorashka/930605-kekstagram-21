@@ -1,7 +1,7 @@
 # Личный проект «Кекстаграм» [![Build status][travis-image]][travis-url]
 
 * Студент: [Сергей Михалев](https://up.htmlacademy.ru/javascript/21/user/930605).
-* Наставник: `Неизвестно`.
+* Наставник: [Белик Павел](https://htmlacademy.ru/profile/id84572).
 
 ---
 
