@@ -2,8 +2,6 @@
 
 // Создание перменных
 
-const PICTURE_BLOCK = 25;
-
 const NAMES = [
   'Сергей',
   'Полина',
@@ -23,14 +21,12 @@ const MESSAGES = [
 const comments = [];
 const pictureBlock = [];
 
-const pictureElement = document.querySelector('.pictures');
+const pictureNode = document.querySelector('.pictures');
 const pictureTemplate = document.querySelector('#picture')
   .content
   .querySelector('.picture');
 
 const fragment = document.createDocumentFragment();
-
-
 
 // Функция генерации случайных чисел
 const renderRandom = function (min, max) {
@@ -39,40 +35,40 @@ const renderRandom = function (min, max) {
 
 // Возращение случайного числа массива
 
-const renderRandomArray = function (array) {
-  return array[renderRandom(0, array.length)];
-}
+// const renderRandomArray = function (array) {
+//   return array[renderRandom(0, array.length)];
+// }
 
-//функция создания генерация случайных комментов
+// функция создания генерация случайных комментов
 
-const renderCommentArray = function (commentsPhoto) {
+const renderCommentArray = function () {
   for (let i = 0; i < renderRandom(0, 25); i++) {
     comments[i] = {
       avatar: 'img/avatar' + renderRandom(1, 6) + '.svg',
       message: renderRandom(MESSAGES),
       name: renderRandom(NAMES)
-    }
+    };
   }
   // return comments;
 };
 
-//Функция генерации объектов
+// Функция генерации объектов
 
-const renderPhotoBlock = function (generation) {
+const renderPhotoBlock = function () {
   for (let i = 0; i < 25; i++) {
     pictureBlock[i] = {
       url: 'photos/' + (i + 1) + '.jpg',
       description: 'Описание фотографии',
       likes: renderRandom(15, 200),
       comment: renderCommentArray()
-    }
+    };
   }
   // return pictureBlock;
-}
+};
 
 // Функция для отрисовки
 
-const renderPicture = function (picture) {
+const renderPicture = function () {
   const pictureElement = pictureTemplate.cloneNode(true);
 
   pictureElement.querySelector('.picture__img').setAttribute('src', pictureBlock.url);
@@ -80,11 +76,11 @@ const renderPicture = function (picture) {
   pictureElement.querySelector('.picture__comments').textContent = pictureBlock.comments.length;
 
   return pictureElement;
-}
+};
 
 for (let i = 0; i < 25; i++) {
   const pictureArray = renderPhotoBlock();
   fragment.appendChild(renderPicture(pictureArray[i]));
 }
 
-pictureElement.appendChild(fragment);
+pictureNode.appendChild(fragment);
