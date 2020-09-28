@@ -29,19 +29,19 @@ const pictureTemplate = document.querySelector('#picture')
 const fragment = document.createDocumentFragment();
 
 // Функция генерации случайных чисел
-const renderRandom = (min, max) => {
+const getRandomNumber = (min, max) => {
   return Math.floor(min + Math.random() * (max + 1 - min));
 };
 
 // функция создания генерация случайных комментов
 
 const renderCommentArray = () => {
-  for (let i = 0; i < renderRandom(0, 25); i++) {
-    comments[i] = {
-      avatar: 'img/avatar' + renderRandom(1, 6) + '.svg',
-      message: renderRandom(MESSAGES),
-      name: renderRandom(NAMES)
-    };
+  for (let i = 0; i < getRandomNumber(0, 25); i++) {
+    comments.push({
+      avatar: 'img/avatar' + getRandomNumber(1, 6) + '.svg',
+      message: getRandomNumber(MESSAGES),
+      name: getRandomNumber(NAMES)
+    });
   }
   return comments;
 };
@@ -50,13 +50,13 @@ const renderCommentArray = () => {
 
 
 const renderPhotoBlock = () => {
-  for (let i = 1; i < 26; i++) {
-    pictureBlock[i] = {
-      url: `photos/${i}.jpg`,
+  for (let i = 0; i < 25; i++) {
+    pictureBlock.push({
+      url: `photos/${i + 1}.jpg`,
       description: 'Описание фотографии',
-      likes: renderRandom(15, 200),
+      likes: getRandomNumber(15, 200),
       comment: renderCommentArray()
-    };
+    });
   }
   return pictureBlock;
 };
@@ -73,7 +73,7 @@ const renderPicture = (picture) => {
   return pictureElement;
 };
 
-for (let i = 1; i < 26; i++) {
+for (let i = 0; i < 25; i++) {
   const pictureArray = renderPhotoBlock();
   fragment.appendChild(renderPicture(pictureArray[i]));
 }
