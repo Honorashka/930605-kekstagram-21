@@ -79,3 +79,60 @@ for (let i = 0; i < 25; i++) {
 }
 
 pictureNode.appendChild(fragment);
+
+// Размер фото на весь экран
+
+
+// Переменные
+
+const bigPicture = document.querySelector('.big-picture');
+const bigPictureImg = document.querySelector('.big-picture__img').querySelector('img');
+const bigPictureLikes = document.querySelector('.likes-count');
+const bigPictureComments = document.querySelector('.comments-count');
+const socialComments = document.querySelectorAll('.social__comment');
+const socialParentsComments = document.querySelector('.social__comments');
+const fragmentComments = document.createDocumentFragment();
+
+// Генерация
+
+const renderComment = () => {
+  for (let i = 0; i < renderPhotoBlock.length; i++) {
+    bigPictureImg.src = `photos/${i + 1}.jpg`;
+    bigPictureLikes.textContent = renderPhotoBlock[0].likes;
+    bigPictureComments.textContent = renderPhotoBlock[0].comments.length;
+  }
+  return renderComment;
+};
+
+// Отрисовка
+
+const generationComment = (genComments) => {
+  const createComment = socialComments.cloneNode(true);
+
+  createComment.querySelector('.social__picture').src = genComments.avatar;
+  createComment.querySelector('.social__picture').alt = genComments.name;
+  createComment.querySelector('.social__text').textContent = comments.message;
+
+  return createComment;
+};
+
+// Вывод
+
+for (let i = 0; i < comments.length; i++) {
+  const createComments = renderComment();
+  fragmentComments.appendChild(generationComment(createComments[i]));
+}
+
+
+socialParentsComments.appendChild(fragmentComments);
+
+// Удаление класса
+
+bigPicture.classList.remove('hidden');
+
+// прячем счетики комментариев
+
+bigPicture.document.querySelector('.social__comment-count').classList.add('hidden');
+bigPicture.document.querySelector('.comments-loader').classList.add('hidden');
+const body = document.querySelector('body');
+body.classList.add('modal-open');
