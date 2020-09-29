@@ -17,10 +17,6 @@ const MESSAGES = [
   'Моя бабушка случайно чихнула с фотоаппаратом в руках и у неё получилась фотография лучше.'
 ];
 
-
-const comments = [];
-const pictureBlock = [];
-
 const pictureNode = document.querySelector('.pictures');
 const pictureTemplate = document.querySelector('#picture')
   .content
@@ -33,14 +29,20 @@ const getRandomNumber = (min, max) => {
   return Math.floor(min + Math.random() * (max + 1 - min));
 };
 
+const getRandomItemFromArray = (arr) => {
+  const index = getRandomNumber(0, arr.length - 1);
+  return arr[index];
+};
+
 // функция создания генерация случайных комментов
 
 const renderCommentArray = () => {
-  for (let i = 0; i < getRandomNumber(0, 25); i++) {
+  const comments = [];
+  for (let i = 0; i < 2; i++) {
     comments.push({
-      avatar: 'img/avatar' + getRandomNumber(1, 6) + '.svg',
-      message: getRandomNumber(MESSAGES),
-      name: getRandomNumber(NAMES)
+      avatar: 'img/avatar-' + getRandomNumber(1, 6) + '.svg',
+      message: getRandomItemFromArray(MESSAGES),
+      name: getRandomItemFromArray(NAMES)
     });
   }
   return comments;
@@ -48,17 +50,18 @@ const renderCommentArray = () => {
 
 // Функция генерации объектов
 
+const pictures = [];
 
 const renderPhotoBlock = () => {
   for (let i = 0; i < 25; i++) {
-    pictureBlock.push({
+    pictures.push({
       url: `photos/${i + 1}.jpg`,
       description: 'Описание фотографии',
       likes: getRandomNumber(15, 200),
-      comment: renderCommentArray()
+      comments: renderCommentArray()
     });
   }
-  return pictureBlock;
+  return pictures;
 };
 
 // Функция для отрисовки
@@ -68,7 +71,7 @@ const renderPicture = (picture) => {
 
   pictureElement.querySelector('.picture__img').src = picture.url;
   pictureElement.querySelector('.picture__likes').textContent = picture.likes;
-  pictureElement.querySelector('.picture__comments').textContent = comments.length;
+  pictureElement.querySelector('.picture__comments').textContent = picture.comments;
 
   return pictureElement;
 };
@@ -89,50 +92,46 @@ const bigPicture = document.querySelector('.big-picture');
 const bigPictureImg = document.querySelector('.big-picture__img').querySelector('img');
 const bigPictureLikes = document.querySelector('.likes-count');
 const bigPictureComments = document.querySelector('.comments-count');
-const socialComments = document.querySelectorAll('.social__comment');
+const socialComments = document.querySelector('.social__comment');
 const socialParentsComments = document.querySelector('.social__comments');
-const fragmentComments = document.createDocumentFragment();
+const socialCaption = document.querySelector('.social__caption');
 
 // Генерация
 
-const renderComment = () => {
-  for (let i = 0; i < renderPhotoBlock.length; i++) {
-    bigPictureImg.src = `photos/${i + 1}.jpg`;
-    bigPictureLikes.textContent = renderPhotoBlock[0].likes;
-    bigPictureComments.textContent = renderPhotoBlock[0].comments.length;
-  }
-  return renderComment;
+const renderComments = (comments) => {
+  comments.forEach((comment) => {
+    const commentBlock = socialComments.cloneNode(true);
+    commentBlock.querySelector('.social__picture').src = comment.avatar;
+    commentBlock.querySelector('.social__picture').alt = comment.name;
+    commentBlock.querySelector('.social__text').textContent = comment.message;
+    socialParentsComments.appendChild(commentBlock);
+  });
 };
 
-// Отрисовка
+// Функция для отображения
 
-const generationComment = (genComments) => {
-  const createComment = socialComments.cloneNode(true);
+const showBigPicture = () => {
+  const picture = pictures[0];
 
-  createComment.querySelector('.social__picture').src = genComments.avatar;
-  createComment.querySelector('.social__picture').alt = genComments.name;
-  createComment.querySelector('.social__text').textContent = comments.message;
+  bigPictureImg.src = picture.url;
+  bigPictureLikes.textContent = picture.likes;
+  bigPictureComments.textContent = picture.comments.length;
+  socialCaption.textContent = picture.description;
+  renderComments(picture.comments);
+  bigPicture.classList.remove('hidden');
 
-  return createComment;
+};
+showBigPicture();
+
+// прячем счетчики комментариев
+
+const hiddenElement = () => {
+  document.querySelector('.social__comment-count').classList.add('hidden');
+  document.querySelector('.comments-loader').classList.add('hidden');
 };
 
-// Вывод
+hiddenElement();
 
-for (let i = 0; i < comments.length; i++) {
-  const createComments = renderComment();
-  fragmentComments.appendChild(generationComment(createComments[i]));
-}
+// Добавление модального окна
 
-
-socialParentsComments.appendChild(fragmentComments);
-
-// Удаление класса
-
-bigPicture.classList.remove('hidden');
-
-// прячем счетики комментариев
-
-bigPicture.document.querySelector('.social__comment-count').classList.add('hidden');
-bigPicture.document.querySelector('.comments-loader').classList.add('hidden');
-const body = document.querySelector('body');
-body.classList.add('modal-open');
+document.querySelector('body').classList.add('modal-open');
