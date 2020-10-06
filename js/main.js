@@ -17,6 +17,13 @@ const MESSAGES = [
   'Моя бабушка случайно чихнула с фотоаппаратом в руках и у неё получилась фотография лучше.'
 ];
 
+const MIN_LENGTH_HASHTAG = 2;
+const MAX_LENGHT_HASHTAG = 20;
+
+const STEP = 25;
+const MIN_SCALE = STEP;
+const MAX_SCALE = 100;
+
 const pictureNode = document.querySelector('.pictures');
 const pictureTemplate = document.querySelector('#picture')
   .content
@@ -207,9 +214,6 @@ const onButtonEscapeCancel = () => {
 
 // Изменение размера фотографии при загрузке
 
-const STEP = 25;
-const MIN_SCALE = STEP;
-const MAX_SCALE = 100;
 const imgUploadPreview = document.querySelector(`.img-upload__preview`).querySelector('img');
 const scaleValue = document.querySelector(`.scale__control--value`);
 const smallButtonScale = document.querySelector(`.scale__control--smaller`);
@@ -240,11 +244,6 @@ bigButtonScale.addEventListener(`click`, () => {
 
 // Оживление ползунка для изменения эффекта + фильтры. Реализация не закончена, нужно будет доделать ползунок и изменение уровень эффекта
 
-const levelPin = document.querySelector('.effect-level__pin');
-levelPin.addEventListener('mouseup', function () { });
-
-// Добавление классов с фильтрами на картинку
-
 const effectPreview = document.querySelectorAll('.effects__radio');
 
 const filterPhotoClass = [
@@ -259,6 +258,7 @@ const filterPhotoClass = [
 const onClickEffectHandler = (effectItem, filterClass) => {
   effectItem.addEventListener('click', function () {
     imgUploadPreview.className = filterClass;
+    resetChangeEffectDepth();
   });
 };
 
@@ -266,24 +266,61 @@ for (let i = 0; i < effectPreview.length; i++) {
   onClickEffectHandler(effectPreview[i], filterPhotoClass[i]);
 }
 
+// Изменения фильтров с помощью тогла, данные при взаимодействии с ползунком пока статичны
+
+const effectLevelPin = document.querySelector('.effect-level__pin');
+// const effectsLevelValue = document.querySelector('.effect-level__value');
+const effectLevelDepth = document.querySelector('.effect-level__depth');
+const effectLevel = document.querySelector('.effect-level');
+
+const changeEffectDepth = () => {
+  if (imgUploadPreview.classList.contains('effects__preview--none')) {
+    imgUploadPreview.style.filter = 'none';
+  } else if (imgUploadPreview.classList.contains('effects__preview--chrome')) {
+    imgUploadPreview.style.filter = 'grayscale(2)';
+  } else if (imgUploadPreview.classList.contains('effects__preview--sepia')) {
+    imgUploadPreview.style.filter = 'sepia(2)';
+  } else if (imgUploadPreview.classList.contains('effects__preview--marvin')) {
+    imgUploadPreview.style.filter = 'invert(70%)';
+  } else if (imgUploadPreview.classList.contains('effects__preview--phobos')) {
+    imgUploadPreview.style.filter = 'blur(2px)';
+  } else if (imgUploadPreview.classList.contains('effects__preview--heat')) {
+    imgUploadPreview.style.filter = 'brightness(2)';
+  }
+};
+
+const resetChangeEffectDepth = () => {
+  if (imgUploadPreview.classList.contains('effects__preview--none')) {
+    effectLevel.classList.add('hidden');
+    imgUploadPreview.style.filter = 'none';
+  } else if (!imgUploadPreview.classList.contains('effects__preview--^')) {
+    imgUploadPreview.style.filter = 'none';
+    effectLevelPin.style.left = '100%';
+    effectLevelDepth.style.width = '100%';
+    effectLevel.classList.remove('hidden');
+  }
+};
+
+effectLevelPin.addEventListener('mouseup', function () {
+  changeEffectDepth();
+});
+
 // Валидация хэштегов
 
 const inputHashTags = document.querySelector('.text__hashtags');
-const MIN_LENGTH_HASHTAG = 2;
-const MAX_LENGHT_HASHTAG = 20;
 
 const onInputHashTags = () => {
   const hashtags = inputHashTags.value.split('');
   for (let i = 0; i < hashtags.length; i++) {
-    const re = /^[\w\d]*$/;
+    const re = /^#[\w\d]*$/;
     re.test(hashtags[i]);
-    if (!re.test(hashtags[i].lenght)) {
+    if (!re.test(hashtags[i])) {
       inputHashTags.setCustomValidity('Хэштег должен начинаться с #, и содержать только буквы и цифры.');
-    } else if (hashtags.length < MIN_LENGTH_HASHTAG) {
+    } else if (hashtags[i].length < MIN_LENGTH_HASHTAG) {
       inputHashTags.setCustomValidity('Добавьте ' + (MIN_LENGTH_HASHTAG - hashtags[i].length) + ' симв.');
-    } else if (hashtags.length > MAX_LENGHT_HASHTAG) {
+    } else if (hashtags[i].length > MAX_LENGHT_HASHTAG) {
       inputHashTags.setCustomValidity('Удалите ' + (hashtags[i].length - MAX_LENGHT_HASHTAG) + ' симв.');
-    } else if (hashtags[i].length > 5) {
+    } else if (hashtags.length > 5) {
       inputHashTags.setCustomValidity('Можно указывать не более 5 хэштегов');
     } else {
       inputHashTags.setCustomValidity('');
