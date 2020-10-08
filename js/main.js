@@ -167,6 +167,8 @@ const closeItems = () => {
 
 closeItems();
 
+// Открытие и закртыие окон с помощью клавиш
+
 const onButtonEscapeItems = () => {
   document.addEventListener('keydown', function (evt) {
     if (evt.keyCode === 27) {
@@ -175,6 +177,20 @@ const onButtonEscapeItems = () => {
     }
   });
 };
+
+const pictureItemLink = document.querySelectorAll('.picture');
+
+const onOpenItems = (evt) => {
+  for (let i = 0; i < pictureItemLink.length; i++) {
+    if (evt.keyCode === 13 && document.activeElement === pictureItemLink[i]) {
+      bigPicture.classList.remove('hidden');
+      document.querySelector('body').classList.add('modal-open');
+      onButtonEscapeItems();
+    }
+  }
+};
+
+document.addEventListener('keydown', onOpenItems);
 
 // Открытие и закрытие окна редактирования фотографии + с помощью ESC
 
@@ -185,8 +201,7 @@ const uploadOverlay = document.querySelector('.img-upload__overlay');
 const openEditWindow = () => {
   uploadOverlay.classList.remove('hidden');
   document.querySelector('body').classList.add('modal-open');
-  onButtonEscapeCancel();
-  onInputHashTags();
+  document.addEventListener('keydown', onButtonEscapeCancel);
 };
 
 const closeEditWindow = () => {
@@ -204,12 +219,10 @@ uploadCancel.addEventListener('click', function () {
   closeEditWindow();
 });
 
-const onButtonEscapeCancel = () => {
-  document.addEventListener('keydown', function (evt) {
-    if (evt.keyCode === 27) {
-      closeEditWindow();
-    }
-  });
+const onButtonEscapeCancel = (evt) => {
+  if (evt.keyCode === 27 && document.activeElement !== inputHashTags && document.activeElement !== textAreaComment) {
+    closeEditWindow();
+  }
 };
 
 // Изменение размера фотографии при загрузке
@@ -308,6 +321,7 @@ effectLevelPin.addEventListener('mouseup', function () {
 // Валидация хэштегов
 
 const inputHashTags = document.querySelector('.text__hashtags');
+const textAreaComment = document.querySelector('.text__description');
 
 const onInputHashTags = () => {
   const hashtags = inputHashTags.value.split('');
