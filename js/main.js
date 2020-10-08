@@ -24,6 +24,9 @@ const STEP = 25;
 const MIN_SCALE = STEP;
 const MAX_SCALE = 100;
 
+const BUTTON_ESCAPE = 27;
+const BUTTON_ENTER = 13;
+
 const pictureNode = document.querySelector('.pictures');
 const pictureTemplate = document.querySelector('#picture')
   .content
@@ -171,7 +174,7 @@ closeItems();
 
 const onButtonEscapeItems = () => {
   document.addEventListener('keydown', function (evt) {
-    if (evt.keyCode === 27) {
+    if (evt.keyCode === BUTTON_ESCAPE) {
       bigPicture.classList.add('hidden');
       document.querySelector('body').classList.remove('modal-open');
     }
@@ -182,7 +185,7 @@ const pictureItemLink = document.querySelectorAll('.picture');
 
 const onOpenItems = (evt) => {
   for (let i = 0; i < pictureItemLink.length; i++) {
-    if (evt.keyCode === 13 && document.activeElement === pictureItemLink[i]) {
+    if (evt.keyCode === BUTTON_ENTER && document.activeElement === pictureItemLink[i]) {
       bigPicture.classList.remove('hidden');
       document.querySelector('body').classList.add('modal-open');
       onButtonEscapeItems();
@@ -220,7 +223,7 @@ uploadCancel.addEventListener('click', function () {
 });
 
 const onButtonEscapeCancel = (evt) => {
-  if (evt.keyCode === 27 && document.activeElement !== inputHashTags && document.activeElement !== textAreaComment) {
+  if (evt.keyCode === BUTTON_ESCAPE && document.activeElement !== inputHashTags && document.activeElement !== textAreaComment) {
     closeEditWindow();
   }
 };
