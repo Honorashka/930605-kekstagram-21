@@ -123,7 +123,7 @@ const renderComments = (comments) => {
 const showBigPicture = () => {
   const picture = pictures[0];
 
-  bigPictureImg.src = picture.url;
+  bigPictureImg.src = picture.url ;
   bigPictureLikes.textContent = picture.likes;
   bigPictureComments.textContent = picture.comments.length;
   socialCaption.textContent = picture.description;
@@ -181,19 +181,20 @@ const onButtonEscapeItems = () => {
   });
 };
 
-const pictureItemLink = document.querySelectorAll('.picture');
+const pictureItemLink = document.querySelector('.picture');
 
-const onOpenItems = (evt) => {
-  for (let i = 0; i < pictureItemLink.length; i++) {
-    if (evt.keyCode === BUTTON_ENTER && document.activeElement === pictureItemLink[i]) {
+const onOpenItemsEnter = (evt) => {
+  const target = evt.target;
+  if (target.className === 'picture') {
+      if (evt.keyCode === BUTTON_ENTER) {
       bigPicture.classList.remove('hidden');
       document.querySelector('body').classList.add('modal-open');
       onButtonEscapeItems();
     }
-  }
-};
+  };
+}
 
-document.addEventListener('keydown', onOpenItems);
+pictureNode.addEventListener('keydown', onOpenItemsEnter);
 
 // Открытие и закрытие окна редактирования фотографии + с помощью ESC
 
