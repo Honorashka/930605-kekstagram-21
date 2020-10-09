@@ -123,7 +123,7 @@ const renderComments = (comments) => {
 const showBigPicture = () => {
   const picture = pictures[0];
 
-  bigPictureImg.src = picture.url ;
+  bigPictureImg.src = picture.url;
   bigPictureLikes.textContent = picture.likes;
   bigPictureComments.textContent = picture.comments.length;
   socialCaption.textContent = picture.description;
@@ -181,18 +181,16 @@ const onButtonEscapeItems = () => {
   });
 };
 
-const pictureItemLink = document.querySelector('.picture');
-
 const onOpenItemsEnter = (evt) => {
   const target = evt.target;
   if (target.className === 'picture') {
-      if (evt.keyCode === BUTTON_ENTER) {
+    if (evt.keyCode === BUTTON_ENTER) {
       bigPicture.classList.remove('hidden');
       document.querySelector('body').classList.add('modal-open');
       onButtonEscapeItems();
     }
-  };
-}
+  }
+};
 
 pictureNode.addEventListener('keydown', onOpenItemsEnter);
 
