@@ -152,7 +152,6 @@ const openItems = () => {
     pictureItems[i].addEventListener('click', function () {
       bigPicture.classList.remove('hidden');
       document.querySelector('body').classList.add('modal-open');
-      onButtonEscapeItems();
     });
   }
 };
@@ -172,27 +171,25 @@ closeItems();
 
 // Открытие и закртыие окон с помощью клавиш
 
-const onButtonEscapeItems = () => {
-  document.addEventListener('keydown', function (evt) {
-    if (evt.keyCode === BUTTON_ESCAPE) {
-      bigPicture.classList.add('hidden');
-      document.querySelector('body').classList.remove('modal-open');
-    }
-  });
+const onButtonEscapeItem = (evt) => {
+  if (evt.keyCode === BUTTON_ESCAPE) {
+    bigPicture.classList.add('hidden');
+    document.querySelector('body').classList.remove('modal-open');
+  }
 };
 
-const onOpenItemsEnter = (evt) => {
-  const target = evt.target;
-  if (target.className === 'picture') {
-    if (evt.keyCode === BUTTON_ENTER) {
+const onButtonEnterItem = (evt) => {
+  if (evt.target.className === 'picture') {
+    const re = evt.target.querySelector('.picture__img');
+    if (evt.keyCode === BUTTON_ENTER && re) {
       bigPicture.classList.remove('hidden');
       document.querySelector('body').classList.add('modal-open');
-      onButtonEscapeItems();
     }
   }
 };
 
-pictureNode.addEventListener('keydown', onOpenItemsEnter);
+pictureNode.addEventListener('keydown', onButtonEnterItem);
+pictureNode.addEventListener('keydown', onButtonEscapeItem);
 
 // Открытие и закрытие окна редактирования фотографии + с помощью ESC
 
