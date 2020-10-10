@@ -180,8 +180,8 @@ const onButtonEscapeItem = (evt) => {
 
 const onButtonEnterItem = (evt) => {
   if (evt.target.className === 'picture') {
-    const re = evt.target.querySelector('.picture__img');
-    if (evt.keyCode === BUTTON_ENTER && re) {
+    const cardImgPreview = evt.target.querySelector('.picture__img');
+    if (evt.keyCode === BUTTON_ENTER && cardImgPreview) {
       bigPicture.classList.remove('hidden');
       document.querySelector('body').classList.add('modal-open');
     }
