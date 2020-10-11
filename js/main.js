@@ -24,6 +24,9 @@ const STEP = 25;
 const MIN_SCALE = STEP;
 const MAX_SCALE = 100;
 
+const BUTTON_ESCAPE = 27;
+const BUTTON_ENTER = 13;
+
 const pictureNode = document.querySelector('.pictures');
 const pictureTemplate = document.querySelector('#picture')
   .content
@@ -149,7 +152,6 @@ const openItems = () => {
     pictureItems[i].addEventListener('click', function () {
       bigPicture.classList.remove('hidden');
       document.querySelector('body').classList.add('modal-open');
-      onButtonEscapeItems();
     });
   }
 };
@@ -167,14 +169,27 @@ const closeItems = () => {
 
 closeItems();
 
-const onButtonEscapeItems = () => {
-  document.addEventListener('keydown', function (evt) {
-    if (evt.keyCode === 27) {
-      bigPicture.classList.add('hidden');
-      document.querySelector('body').classList.remove('modal-open');
-    }
-  });
+// Открытие и закртыие окон с помощью клавиш
+
+const onButtonEscapeItem = (evt) => {
+  if (evt.keyCode === BUTTON_ESCAPE) {
+    bigPicture.classList.add('hidden');
+    document.querySelector('body').classList.remove('modal-open');
+  }
 };
+
+const onButtonEnterItem = (evt) => {
+  if (evt.target.className === 'picture') {
+    const cardImgPreview = evt.target.querySelector('.picture__img');
+    if (evt.keyCode === BUTTON_ENTER && cardImgPreview) {
+      bigPicture.classList.remove('hidden');
+      document.querySelector('body').classList.add('modal-open');
+    }
+  }
+};
+
+pictureNode.addEventListener('keydown', onButtonEnterItem);
+pictureNode.addEventListener('keydown', onButtonEscapeItem);
 
 // Открытие и закрытие окна редактирования фотографии + с помощью ESC
 
@@ -185,8 +200,7 @@ const uploadOverlay = document.querySelector('.img-upload__overlay');
 const openEditWindow = () => {
   uploadOverlay.classList.remove('hidden');
   document.querySelector('body').classList.add('modal-open');
-  onButtonEscapeCancel();
-  onInputHashTags();
+  document.addEventListener('keydown', onButtonEscapeCancel);
 };
 
 const closeEditWindow = () => {
@@ -204,12 +218,10 @@ uploadCancel.addEventListener('click', function () {
   closeEditWindow();
 });
 
-const onButtonEscapeCancel = () => {
-  document.addEventListener('keydown', function (evt) {
-    if (evt.keyCode === 27) {
-      closeEditWindow();
-    }
-  });
+const onButtonEscapeCancel = (evt) => {
+  if (evt.keyCode === BUTTON_ESCAPE && document.activeElement !== inputHashTags && document.activeElement !== textAreaComment) {
+    closeEditWindow();
+  }
 };
 
 // Изменение размера фотографии при загрузке
@@ -308,6 +320,7 @@ effectLevelPin.addEventListener('mouseup', function () {
 // Валидация хэштегов
 
 const inputHashTags = document.querySelector('.text__hashtags');
+const textAreaComment = document.querySelector('.text__description');
 
 const onInputHashTags = () => {
   const hashtags = inputHashTags.value.split('');
