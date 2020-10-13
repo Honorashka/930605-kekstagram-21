@@ -45,20 +45,18 @@
 
   // Функция генерации объектов
 
-  window.pictureArr = {
-    pictures: [],
-  };
+  const pictures = [];
 
   const renderPhotoBlock = () => {
     for (let i = 0; i < 25; i++) {
-      window.pictureArr.pictures.push({
+      pictures.push({
         url: `photos/${i + 1}.jpg`,
         description: 'Описание фотографии',
         likes: getRandomNumber(15, 200),
         comments: renderCommentArray()
       });
     }
-    return window.pictureArr.pictures;
+    return pictures;
   };
 
   // Функция генерации случайных чисел
@@ -73,6 +71,7 @@
 
   window.data = {
     renderPhotoBlock,
+    pictures: pictures,
   };
 
 })();

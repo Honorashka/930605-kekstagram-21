@@ -12,7 +12,7 @@
   // Функция для отображения
 
   const showBigPicture = () => {
-    const picture = window.pictureArr.pictures[0];
+    const picture = window.data.pictures[0];
 
     bigPictureImg.src = picture.url;
     bigPictureLikes.textContent = picture.likes;

@@ -29,7 +29,6 @@
   // Изменения фильтров с помощью тогла, данные при взаимодействии с ползунком пока статичны
 
   const effectLevelPin = document.querySelector('.effect-level__pin');
-  // const effectsLevelValue = document.querySelector('.effect-level__value');
   const effectLevelDepth = document.querySelector('.effect-level__depth');
   const effectLevel = document.querySelector('.effect-level');
 
@@ -61,9 +60,7 @@
     }
   };
 
-  effectLevelPin.addEventListener('mouseup', function () {
-    changeEffectDepth();
-  });
+  effectLevelPin.addEventListener('mouseup', changeEffectDepth);
 
   window.effects = {
     imgUploadPreview: imgUploadPreview,

@@ -20,14 +20,18 @@
     }
   };
 
-  smallButtonScale.addEventListener(`click`, () => {
+  const setScaleValueDown = () => {
     const currentValue = scaleValue.value;
     setScaleValue(parseInt(currentValue, 10) - window.scale.STEP);
-  });
+  };
 
-  bigButtonScale.addEventListener(`click`, () => {
+  const setScaleValueUp = () => {
     const currentValue = scaleValue.value;
     setScaleValue(parseInt(currentValue, 10) + window.scale.STEP);
-  });
+  };
+
+  smallButtonScale.addEventListener(`click`, setScaleValueDown);
+
+  bigButtonScale.addEventListener(`click`, setScaleValueUp);
 
 })();
