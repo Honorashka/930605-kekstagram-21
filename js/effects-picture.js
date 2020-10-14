@@ -60,7 +60,62 @@
     }
   };
 
-  effectLevelPin.addEventListener('mouseup', changeEffectDepth);
+  // effectLevelPin.addEventListener('mousmove', changeEffectDepth);
+
+  const setEffectValue = (value) => {
+    effectLevelPin.style.left = `${value * 100}%`;
+    effectLevelDepth.style.width = `${value * 100}%`;
+  };
+
+  const effectLevelLine = document.querySelector('.effect-level__line');
+
+  effectLevelPin.addEventListener('mousedown', function (evt) {
+    const widthLevelLine = parseFloat(getComputedStyle(effectLevelLine).width);
+    evt.preventDefault();
+
+    const startCoords = {
+      x: evt.clientX
+    };
+
+    const dragged = false;
+
+    const onMouseMove = (moveEvt) => {
+      moveEvt.preventDefault();
+      dragged = true;
+
+      const shift = {
+        x: startCoords.x - moveEvt.clientX
+      };
+
+      startCoords = {
+        x: moveEvt.clientX
+      };
+
+      const changeLevel = (effectLevelPin.offsetLeft - shift.x) / widthLevelLine;
+
+      setEffectValue(changeLevel);
+
+    };
+
+    const onMouseUp = (upEvt) => {
+      upEvt.preventDefault();
+
+      document.removeEventListener('mousemove', onMouseMove);
+      document.removeEventListener('mouseup', onMouseUp);
+
+      if (dragged) {
+        const onClickPreventDefault = function (click) {
+          click.preventDefault();
+          effectLevelPin.removeEventListener(`click`, onClickPreventDefault);
+        };
+        effectLevelPin.addEventListener(`click`, onClickPreventDefault);
+      }
+    };
+
+    document.addEventListener('mousemove', onMouseMove);
+    document.addEventListener('mouseup', onMouseUp);
+
+  });
 
   window.effects = {
     imgUploadPreview: imgUploadPreview,
