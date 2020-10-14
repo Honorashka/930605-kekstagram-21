@@ -60,11 +60,11 @@
     }
   };
 
-  // effectLevelPin.addEventListener('mousmove', changeEffectDepth);
+  effectLevelPin.addEventListener('mousedown', changeEffectDepth);
 
   const setEffectValue = (value) => {
-    effectLevelPin.style.left = `${value * 100}%`;
-    effectLevelDepth.style.width = `${value * 100}%`;
+    effectLevelPin.style.left = `${Math.round(value * 100)}%`;
+    effectLevelDepth.style.width = `${Math.round(value * 100)}%`;
   };
 
   const effectLevelLine = document.querySelector('.effect-level__line');
@@ -73,28 +73,30 @@
     const widthLevelLine = parseFloat(getComputedStyle(effectLevelLine).width);
     evt.preventDefault();
 
-    const startCoords = {
-      x: evt.clientX
+    let startCoords = {
+      x: evt.clientX,
     };
 
-    const dragged = false;
+    let dragged = false;
 
     const onMouseMove = (moveEvt) => {
       moveEvt.preventDefault();
+
       dragged = true;
 
       const shift = {
-        x: startCoords.x - moveEvt.clientX
+        x: startCoords.x - moveEvt.clientX,
       };
 
       startCoords = {
-        x: moveEvt.clientX
+        x: moveEvt.clientX,
       };
 
       const changeLevel = (effectLevelPin.offsetLeft - shift.x) / widthLevelLine;
 
-      setEffectValue(changeLevel);
-
+      if (changeLevel >= 0 && changeLevel <= 1) {
+        setEffectValue(changeLevel);
+      }
     };
 
     const onMouseUp = (upEvt) => {
@@ -104,8 +106,8 @@
       document.removeEventListener('mouseup', onMouseUp);
 
       if (dragged) {
-        const onClickPreventDefault = function (click) {
-          click.preventDefault();
+        const onClickPreventDefault = function (clickEvt) {
+          clickEvt.preventDefault();
           effectLevelPin.removeEventListener(`click`, onClickPreventDefault);
         };
         effectLevelPin.addEventListener(`click`, onClickPreventDefault);
