@@ -5,6 +5,10 @@
 
   const effectPreview = document.querySelectorAll('.effects__radio');
   const imgUploadPreview = document.querySelector(`.img-upload__preview`).querySelector('img');
+  const effectLevelPin = document.querySelector('.effect-level__pin');
+  const effectLevelDepth = document.querySelector('.effect-level__depth');
+  const effectLevelLine = document.querySelector('.effect-level__line');
+  const effectLevel = document.querySelector('.effect-level');
 
   const filterPhotoClass = [
     'effects__preview--none',
@@ -22,29 +26,27 @@
     });
   };
 
+
   for (let i = 0; i < effectPreview.length; i++) {
     onClickEffectHandler(effectPreview[i], filterPhotoClass[i]);
+    effectLevel.classList.add('hidden');
   }
 
-  // Изменения фильтров с помощью тогла, данные при взаимодействии с ползунком пока статичны
-
-  const effectLevelPin = document.querySelector('.effect-level__pin');
-  const effectLevelDepth = document.querySelector('.effect-level__depth');
-  const effectLevel = document.querySelector('.effect-level');
+  // Изменения фильтров с помощью тогла + взаимодейсвтие с ползунком работает
 
   const changeEffectDepth = () => {
     if (imgUploadPreview.classList.contains('effects__preview--none')) {
       imgUploadPreview.style.filter = 'none';
     } else if (imgUploadPreview.classList.contains('effects__preview--chrome')) {
-      imgUploadPreview.style.filter = 'grayscale(2)';
+      imgUploadPreview.style.filter = `grayscale(${(parseFloat(effectLevelPin.style.left) / 100)})`;
     } else if (imgUploadPreview.classList.contains('effects__preview--sepia')) {
-      imgUploadPreview.style.filter = 'sepia(2)';
+      imgUploadPreview.style.filter = `sepia(${(parseFloat(effectLevelPin.style.left) / 100)})`;
     } else if (imgUploadPreview.classList.contains('effects__preview--marvin')) {
-      imgUploadPreview.style.filter = 'invert(70%)';
+      imgUploadPreview.style.filter = `invert(${effectLevelPin.style.left})`;
     } else if (imgUploadPreview.classList.contains('effects__preview--phobos')) {
-      imgUploadPreview.style.filter = 'blur(2px)';
+      imgUploadPreview.style.filter = `blur(${((parseFloat(effectLevelPin.style.left) / (100 / 3)))}px)`;
     } else if (imgUploadPreview.classList.contains('effects__preview--heat')) {
-      imgUploadPreview.style.filter = 'brightness(2)';
+      imgUploadPreview.style.filter = `brightness(${Math.round(((parseFloat(effectLevelPin.style.left) / (100 / 2) + 1)))})`;
     }
   };
 
@@ -60,41 +62,40 @@
     }
   };
 
-  // effectLevelPin.addEventListener('mousmove', changeEffectDepth);
-
-  const setEffectValue = (value) => {
-    effectLevelPin.style.left = `${value * 100}%`;
-    effectLevelDepth.style.width = `${value * 100}%`;
+  const setEffectValue = (values) => {
+    effectLevelPin.style.left = `${Math.round(values * 100)}%`;
+    effectLevelDepth.style.width = `${Math.round(values * 100)}%`;
   };
 
-  const effectLevelLine = document.querySelector('.effect-level__line');
-
-  effectLevelPin.addEventListener('mousedown', function (evt) {
+  const onMouseEffect = (evt) => {
     const widthLevelLine = parseFloat(getComputedStyle(effectLevelLine).width);
     evt.preventDefault();
 
-    const startCoords = {
-      x: evt.clientX
+    let startCoords = {
+      x: evt.clientX,
     };
 
-    const dragged = false;
+    let dragged = false;
 
     const onMouseMove = (moveEvt) => {
       moveEvt.preventDefault();
+
       dragged = true;
 
       const shift = {
-        x: startCoords.x - moveEvt.clientX
+        x: startCoords.x - moveEvt.clientX,
       };
 
       startCoords = {
-        x: moveEvt.clientX
+        x: moveEvt.clientX,
       };
 
       const changeLevel = (effectLevelPin.offsetLeft - shift.x) / widthLevelLine;
 
-      setEffectValue(changeLevel);
-
+      if (changeLevel >= 0 && changeLevel <= 1) {
+        setEffectValue(changeLevel);
+        changeEffectDepth();
+      }
     };
 
     const onMouseUp = (upEvt) => {
@@ -104,8 +105,8 @@
       document.removeEventListener('mouseup', onMouseUp);
 
       if (dragged) {
-        const onClickPreventDefault = function (click) {
-          click.preventDefault();
+        const onClickPreventDefault = function (clickEvt) {
+          clickEvt.preventDefault();
           effectLevelPin.removeEventListener(`click`, onClickPreventDefault);
         };
         effectLevelPin.addEventListener(`click`, onClickPreventDefault);
@@ -114,8 +115,9 @@
 
     document.addEventListener('mousemove', onMouseMove);
     document.addEventListener('mouseup', onMouseUp);
+  };
 
-  });
+  effectLevelPin.addEventListener('mousedown', onMouseEffect);
 
   window.effects = {
     imgUploadPreview: imgUploadPreview,
