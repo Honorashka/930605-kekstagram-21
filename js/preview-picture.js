@@ -41,6 +41,7 @@
 
 
   const onItemOpen = (evt) => {
+    window.picture.socialComments.textContent = '';
     const ChoosenPictureElement = evt.target.closest('.picture');
     if (ChoosenPictureElement) {
       const pictureIndex = indexPictureImage(ChoosenPictureElement);
