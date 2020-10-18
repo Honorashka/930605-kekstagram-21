@@ -7,12 +7,13 @@
   const bigPictureComments = document.querySelector('.comments-count');
   const socialCaption = document.querySelector('.social__caption');
   const buttonPictureItems = document.querySelector('#picture-cancel');
-  const pictureItems = document.querySelectorAll('.picture__img');
+  // const pictureItems = document.querySelectorAll('.picture');
+  const pictures = document.querySelector('.pictures');
 
   // Функция для отображения
 
-  const showBigPicture = () => {
-    const picture = window.data.pictures[0];
+  const showBigPicture = (index) => {
+    const picture = window.get[index];
 
     bigPictureImg.src = picture.url;
     bigPictureLikes.textContent = picture.likes;
@@ -22,7 +23,6 @@
     bigPicture.classList.remove('hidden');
 
   };
-  showBigPicture();
 
   // прячем счетчики комментариев
 
@@ -33,30 +33,36 @@
 
   hiddenComment();
 
-  // Добавил открытие/закрытие карточек
 
-  const openItems = () => {
-    for (let i = 0; i < pictureItems.length; i++) {
-      pictureItems[i].addEventListener('click', function () {
-        bigPicture.classList.remove('hidden');
-        document.querySelector('body').classList.add('modal-open');
-      });
+  const indexPictureImage = (picture) => {
+    const pictureList = pictures.querySelectorAll('.picture');
+    return Array.from(pictureList).indexOf(picture);
+  };
+
+
+  const onItemOpen = (evt) => {
+    const ChoosenPictureElement = evt.target.closest('.picture');
+    if (ChoosenPictureElement) {
+      const pictureIndex = indexPictureImage(ChoosenPictureElement);
+      document.querySelector('body').classList.add('modal-open');
+
+      showBigPicture(pictureIndex);
     }
   };
 
-  openItems();
-
   const closeItems = () => {
-    buttonPictureItems.addEventListener('click', function () {
-      bigPicture.classList.add('hidden');
-      document.querySelector('body').classList.remove('modal-open');
-    });
+    bigPicture.classList.add('hidden');
+    document.querySelector('body').classList.remove('modal-open');
   };
-
-  closeItems();
 
   window.preview = {
     bigPicture: bigPicture,
+    bigPict: bigPictureImg,
+    onItemOpen: onItemOpen,
+    showBigPicture: showBigPicture,
+    indexPictureImage: indexPictureImage,
+    closeItems: closeItems,
+    buttonPictureItems: buttonPictureItems,
   };
 
 })();
