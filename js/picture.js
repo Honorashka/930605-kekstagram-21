@@ -67,7 +67,7 @@
   window.picture = {
     renderComments,
     pictureNode: pictureNode,
+    socialComments: socialParentsComments,
   };
 
 })();
-

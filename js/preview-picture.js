@@ -53,6 +53,8 @@
   const closeItems = () => {
     bigPicture.classList.add('hidden');
     document.querySelector('body').classList.remove('modal-open');
+
+    window.picture.socialComments.textContent = '';
   };
 
   window.preview = {

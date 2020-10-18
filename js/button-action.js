@@ -11,6 +11,8 @@
     if (evt.keyCode === BUTTON_ESCAPE) {
       window.preview.bigPicture.classList.add('hidden');
       document.querySelector('body').classList.remove('modal-open');
+
+      window.picture.socialComments.textContent = '';
     }
   };
 
