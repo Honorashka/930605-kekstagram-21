@@ -35,17 +35,9 @@
     return pictureElement;
   };
 
-  // for (let i = 0; i < 25; i++) {
-  //   const pictureArray = window.data.renderPhotoBlock();
-  //   fragment.appendChild(renderPicture(pictureArray[i]));
-  // }
-
-  // pictureNode.appendChild(fragment);
-
-
-  const soccessHundler = function (picture) {
+  const soccessHundler = function (pictures) {
     for (let i = 0; i < 25; i++) {
-      fragment.appendChild(renderPicture(picture[i]));
+      fragment.appendChild(renderPicture(pictures[i]));
     }
     pictureNode.appendChild(fragment);
   };
@@ -67,7 +59,7 @@
   window.picture = {
     renderComments,
     pictureNode: pictureNode,
-    socialComments: socialParentsComments,
+    socialComments: socialParentsComments
   };
 
 })();

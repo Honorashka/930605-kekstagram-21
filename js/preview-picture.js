@@ -7,13 +7,13 @@
   const bigPictureComments = document.querySelector('.comments-count');
   const socialCaption = document.querySelector('.social__caption');
   const buttonPictureItems = document.querySelector('#picture-cancel');
-  // const pictureItems = document.querySelectorAll('.picture');
   const pictures = document.querySelector('.pictures');
+  const MIN_COMMENTS = 5;
 
   // Функция для отображения
 
-  const showBigPicture = (index) => {
-    const picture = window.get[index];
+  const showBigPicture = (id) => {
+    const picture = window.load.dataServerArr[id];
 
     bigPictureImg.src = picture.url;
     bigPictureLikes.textContent = picture.likes;
@@ -42,12 +42,13 @@
 
   const onItemOpen = (evt) => {
     window.picture.socialComments.textContent = '';
+
     const ChoosenPictureElement = evt.target.closest('.picture');
     if (ChoosenPictureElement) {
-      const pictureIndex = indexPictureImage(ChoosenPictureElement);
+      const pictureId = indexPictureImage(ChoosenPictureElement);
       document.querySelector('body').classList.add('modal-open');
 
-      showBigPicture(pictureIndex);
+      showBigPicture(pictureId);
     }
   };
 
@@ -60,10 +61,7 @@
 
   window.preview = {
     bigPicture: bigPicture,
-    bigPict: bigPictureImg,
     onItemOpen: onItemOpen,
-    showBigPicture: showBigPicture,
-    indexPictureImage: indexPictureImage,
     closeItems: closeItems,
     buttonPictureItems: buttonPictureItems,
   };

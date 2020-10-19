@@ -14,11 +14,14 @@
     xhr.open('GET', URL);
 
     xhr.addEventListener('load', function () {
+      const dataServerArr = xhr.response;
       if (xhr.status === StatusCode.OK) {
         onSuccess(xhr.response);
-        window.get = xhr.response;
       } else {
         onError('Статус ответа' + xhr.status + ' ' + xhr.statusText);
+      }
+      window.load = {
+        dataServerArr: dataServerArr,
       }
     });
 
@@ -32,6 +35,7 @@
     xhr.timeout = TIMEOUT;
 
     xhr.send();
+
 
 
   };
