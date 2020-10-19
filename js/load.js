@@ -22,7 +22,7 @@
       }
       window.load = {
         dataServerArr: dataServerArr,
-      }
+      };
     });
 
     xhr.addEventListener('error', function () {
@@ -35,8 +35,6 @@
     xhr.timeout = TIMEOUT;
 
     xhr.send();
-
-
 
   };
 })();

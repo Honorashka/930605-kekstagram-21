@@ -8,7 +8,6 @@
   const socialCaption = document.querySelector('.social__caption');
   const buttonPictureItems = document.querySelector('#picture-cancel');
   const pictures = document.querySelector('.pictures');
-  const MIN_COMMENTS = 5;
 
   // Функция для отображения
 
