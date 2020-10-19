@@ -7,12 +7,12 @@
   const bigPictureComments = document.querySelector('.comments-count');
   const socialCaption = document.querySelector('.social__caption');
   const buttonPictureItems = document.querySelector('#picture-cancel');
-  const pictureItems = document.querySelectorAll('.picture__img');
+  const pictures = document.querySelector('.pictures');
 
   // Функция для отображения
 
-  const showBigPicture = () => {
-    const picture = window.data.pictures[0];
+  const showBigPicture = (id) => {
+    const picture = window.load.dataServerArr[id];
 
     bigPictureImg.src = picture.url;
     bigPictureLikes.textContent = picture.likes;
@@ -22,7 +22,6 @@
     bigPicture.classList.remove('hidden');
 
   };
-  showBigPicture();
 
   // прячем счетчики комментариев
 
@@ -33,30 +32,37 @@
 
   hiddenComment();
 
-  // Добавил открытие/закрытие карточек
 
-  const openItems = () => {
-    for (let i = 0; i < pictureItems.length; i++) {
-      pictureItems[i].addEventListener('click', function () {
-        bigPicture.classList.remove('hidden');
-        document.querySelector('body').classList.add('modal-open');
-      });
+  const indexPictureImage = (picture) => {
+    const pictureList = pictures.querySelectorAll('.picture');
+    return Array.from(pictureList).indexOf(picture);
+  };
+
+
+  const onItemOpen = (evt) => {
+    window.picture.socialComments.textContent = '';
+
+    const ChoosenPictureElement = evt.target.closest('.picture');
+    if (ChoosenPictureElement) {
+      const pictureId = indexPictureImage(ChoosenPictureElement);
+      document.querySelector('body').classList.add('modal-open');
+
+      showBigPicture(pictureId);
     }
   };
 
-  openItems();
-
   const closeItems = () => {
-    buttonPictureItems.addEventListener('click', function () {
-      bigPicture.classList.add('hidden');
-      document.querySelector('body').classList.remove('modal-open');
-    });
-  };
+    bigPicture.classList.add('hidden');
+    document.querySelector('body').classList.remove('modal-open');
 
-  closeItems();
+    window.picture.socialComments.textContent = '';
+  };
 
   window.preview = {
     bigPicture: bigPicture,
+    onItemOpen: onItemOpen,
+    closeItems: closeItems,
+    buttonPictureItems: buttonPictureItems,
   };
 
 })();
