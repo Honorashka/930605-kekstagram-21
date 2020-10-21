@@ -9,6 +9,9 @@
   const effectLevelDepth = document.querySelector('.effect-level__depth');
   const effectLevelLine = document.querySelector('.effect-level__line');
   const effectLevel = document.querySelector('.effect-level');
+  const uploadCancel = document.querySelector('#upload-cancel');
+  const uploadFile = document.querySelector('#upload-file');
+  const uploadOverlay = document.querySelector('.img-upload__overlay');
 
   const filterPhotoClass = [
     'effects__preview--none',
@@ -119,8 +122,30 @@
 
   effectLevelPin.addEventListener('mousedown', onMouseEffect);
 
+  // Открытие и закрытие окна редактирования фотографии + с помощью ESC
+
+  const openEditWindow = () => {
+    uploadOverlay.classList.remove('hidden');
+    document.querySelector('body').classList.add('modal-open');
+    document.addEventListener('keydown', window.button.onButtonEscapeCancel);
+  };
+
+  const closeEditWindow = () => {
+    uploadOverlay.classList.add('hidden');
+    document.querySelector('body').classList.remove('modal-open');
+    uploadFile.value = '';
+    imgUploadPreview.className = 'effects__preview--none';
+    resetChangeEffectDepth();
+  };
+
+
   window.effects = {
     imgUploadPreview: imgUploadPreview,
+    uploadCancel: uploadCancel,
+    uploadFile: uploadFile,
+    uploadOverlay: uploadOverlay,
+    openEditWindow: openEditWindow,
+    closeEditWindow: closeEditWindow
   };
 
 })();

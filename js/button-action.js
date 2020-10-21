@@ -20,8 +20,16 @@
     if (evt.target.className === 'picture') {
       const cardImgPreview = evt.target.querySelector('.picture__img');
       if (evt.keyCode === BUTTON_ENTER && cardImgPreview) {
-        window.preview.onItemOpen();
+        if (evt.keyCode === BUTTON_ENTER) {
+          document.querySelector('body').classList.add('modal-open');
+        }
       }
+    }
+  };
+
+  const onButtonEscapeCancel = (evt) => {
+    if (evt.keyCode === window.button.BUTTON_ESCAPE && document.activeElement !== window.validation.inputHashTags && document.activeElement !== window.validation.textAreaComment) {
+      window.effects.closeEditWindow();
     }
   };
 
@@ -29,6 +37,7 @@
     onButtonEscapeItem,
     onButtonEnterItem,
     BUTTON_ESCAPE: BUTTON_ESCAPE,
+    onButtonEscapeCancel
   };
 
 })();
