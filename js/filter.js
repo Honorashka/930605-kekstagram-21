@@ -20,7 +20,11 @@
   };
 
   const showDefaultPictures = () => {
-    reloadPictures(window.load.dataServerArr);
+    let reg = window.load.post;
+
+    window.picture.pictureNode.addEventListener('click', window.preview.onItemOpenClick);
+
+    reloadPictures(reg);
   };
 
   const showRandomPictures = () => {
@@ -32,6 +36,9 @@
     const randomArrayPictures = updatePosts.slice(0, 10);
 
     reloadPictures(randomArrayPictures);
+
+    window.picture.pictureNode.removeEventListener('click', window.preview.onItemOpenClick);
+
   };
 
   const showFilterDisscussed = () => {
@@ -48,6 +55,8 @@
     });
 
     reloadPictures(filterDisscussed);
+
+    window.picture.pictureNode.removeEventListener('click', window.preview.onItemOpenClick);
 
   };
 

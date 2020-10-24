@@ -23,6 +23,18 @@
 
   };
 
+  const showBigPictureClick = (id) => {
+    const picture = window.load.post[id];
+
+    bigPictureImg.src = picture.url;
+    bigPictureLikes.textContent = picture.likes;
+    bigPictureComments.textContent = picture.comments.length;
+    socialCaption.textContent = picture.description;
+    window.picture.renderComments(picture.comments);
+    bigPicture.classList.remove('hidden');
+
+  };
+
   // прячем счетчики комментариев
 
   const hiddenComment = () => {
@@ -38,7 +50,6 @@
     return Array.from(pictureList).indexOf(picture);
   };
 
-
   const onItemOpen = (evt) => {
     window.picture.socialComments.textContent = '';
 
@@ -48,6 +59,18 @@
       document.querySelector('body').classList.add('modal-open');
 
       showBigPicture(pictureId);
+    }
+  };
+
+  const onItemOpenClick = (evt) => {
+    window.picture.socialComments.textContent = '';
+
+    const ChoosenPictureElement = evt.target.closest('.picture');
+    if (ChoosenPictureElement) {
+      const pictureId = indexPictureImage(ChoosenPictureElement);
+      document.querySelector('body').classList.add('modal-open');
+
+      showBigPictureClick(pictureId);
     }
   };
 
@@ -63,6 +86,7 @@
     onItemOpen: onItemOpen,
     closeItems: closeItems,
     buttonPictureItems: buttonPictureItems,
+    onItemOpenClick: onItemOpenClick,
   };
 
 })();
