@@ -6,7 +6,6 @@
   const StatusCode = {
     OK: 200,
   };
-  let postArray = [];
 
 
   window.load = function (onSuccess, onError) {
@@ -19,15 +18,11 @@
       const dataServerArr = xhr.response;
       if (xhr.status === StatusCode.OK) {
         onSuccess(xhr.response);
-        for (let i = 0; i < dataServerArr.length; i++) {
-          postArray.push(dataServerArr[i]);
-        }
       } else {
         onError('Статус ответа' + xhr.status + ' ' + xhr.statusText);
       }
       window.load = {
         dataServerArr: dataServerArr,
-        post: postArray,
       };
     });
 

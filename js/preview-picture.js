@@ -23,8 +23,8 @@
 
   };
 
-  const showBigPictureClick = (id) => {
-    const picture = window.load.post[id];
+  const showFilterBigPictureClick = (id) => {
+    const picture = window.filter.preparedPosts[id];
 
     bigPictureImg.src = picture.url;
     bigPictureLikes.textContent = picture.likes;
@@ -46,14 +46,14 @@
 
 
   const indexPictureImage = (picture) => {
-    const pictureList = pictures.querySelectorAll('.picture');
+    const pictureList = pictures.querySelectorAll('.picture__img');
     return Array.from(pictureList).indexOf(picture);
   };
 
   const onItemOpen = (evt) => {
     window.picture.socialComments.textContent = '';
 
-    const ChoosenPictureElement = evt.target.closest('.picture');
+    const ChoosenPictureElement = evt.target.closest('.picture__img');
     if (ChoosenPictureElement) {
       const pictureId = indexPictureImage(ChoosenPictureElement);
       document.querySelector('body').classList.add('modal-open');
@@ -62,15 +62,15 @@
     }
   };
 
-  const onItemOpenClick = (evt) => {
+  const onFilterItemOpenClick = (evt) => {
     window.picture.socialComments.textContent = '';
 
-    const ChoosenPictureElement = evt.target.closest('.picture');
+    const ChoosenPictureElement = evt.target.closest('.picture__img');
     if (ChoosenPictureElement) {
       const pictureId = indexPictureImage(ChoosenPictureElement);
       document.querySelector('body').classList.add('modal-open');
 
-      showBigPictureClick(pictureId);
+      showFilterBigPictureClick(pictureId);
     }
   };
 
@@ -86,7 +86,7 @@
     onItemOpen: onItemOpen,
     closeItems: closeItems,
     buttonPictureItems: buttonPictureItems,
-    onItemOpenClick: onItemOpenClick,
+    onFilterItemOpenClick: onFilterItemOpenClick,
   };
 
 })();

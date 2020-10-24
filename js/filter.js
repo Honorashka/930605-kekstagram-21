@@ -20,31 +20,40 @@
   };
 
   const showDefaultPictures = () => {
-    let reg = window.load.post;
-
-    window.picture.pictureNode.addEventListener('click', window.preview.onItemOpenClick);
-
-    reloadPictures(reg);
+    reloadPictures(window.load.dataServerArr);
+    window.picture.pictureNode.addEventListener('click', window.preview.onItemOpen);
+    window.picture.pictureNode.removeEventListener('click', window.preview.onFilterItemOpenClick);
   };
+
 
   const showRandomPictures = () => {
 
     let updatePosts = window.load.dataServerArr;
 
-    window.data.shuffle(updatePosts);
+    const preparedPosts = [...updatePosts];
 
-    const randomArrayPictures = updatePosts.slice(0, 10);
+    preparedPosts.sort(function () {
+      return 0.5 - Math.random();
+    });
+
+    const randomArrayPictures = preparedPosts.slice(0, 10);
 
     reloadPictures(randomArrayPictures);
 
-    window.picture.pictureNode.removeEventListener('click', window.preview.onItemOpenClick);
-
+    window.picture.pictureNode.removeEventListener('click', window.preview.onItemOpen);
+    window.picture.pictureNode.addEventListener('click', window.preview.onFilterItemOpenClick);
+    window.filter = {
+      preparedPosts: preparedPosts,
+    };
   };
+
 
   const showFilterDisscussed = () => {
     let updatePosts = window.load.dataServerArr;
 
-    const filterDisscussed = updatePosts.sort(function (left, right) {
+    const preparedPosts = [...updatePosts];
+
+    const filterDisscussed = preparedPosts.sort(function (left, right) {
       if (left.comments.length > right.comments.length) {
         return -1;
       } else if (left.comments.length < right.comments.length) {
@@ -56,9 +65,14 @@
 
     reloadPictures(filterDisscussed);
 
-    window.picture.pictureNode.removeEventListener('click', window.preview.onItemOpenClick);
+    window.picture.pictureNode.removeEventListener('click', window.preview.onItemOpen);
+    window.picture.pictureNode.addEventListener('click', window.preview.onFilterItemOpenClick);
+    window.filter = {
+      preparedPosts: preparedPosts,
+    };
 
   };
+
 
   const onClickShowDefaultPictures = window.debounce(function () {
     buttonFilter.forEach((el) => el.classList.remove('img-filters__button--active'));
