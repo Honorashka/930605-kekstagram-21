@@ -35,8 +35,8 @@
     return pictureElement;
   };
 
-  const soccessHundler = function (pictures) {
-    for (let i = 0; i < 25; i++) {
+  const successHundler = function (pictures) {
+    for (let i = 0; i < pictures.length; i++) {
       fragment.appendChild(renderPicture(pictures[i]));
     }
     pictureNode.appendChild(fragment);
@@ -54,12 +54,13 @@
     document.body.insertAdjacentElement('afterbegin', node);
   };
 
-  window.load(soccessHundler, errorHundler);
+  window.load(successHundler, errorHundler);
 
   window.picture = {
     renderComments,
     pictureNode: pictureNode,
-    socialComments: socialParentsComments
+    socialComments: socialParentsComments,
+    successHundler: successHundler,
   };
 
 })();

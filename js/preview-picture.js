@@ -23,6 +23,18 @@
 
   };
 
+  const showFilterBigPictureClick = (id) => {
+    const picture = window.filter.preparedPosts[id];
+
+    bigPictureImg.src = picture.url;
+    bigPictureLikes.textContent = picture.likes;
+    bigPictureComments.textContent = picture.comments.length;
+    socialCaption.textContent = picture.description;
+    window.picture.renderComments(picture.comments);
+    bigPicture.classList.remove('hidden');
+
+  };
+
   // прячем счетчики комментариев
 
   const hiddenComment = () => {
@@ -34,20 +46,31 @@
 
 
   const indexPictureImage = (picture) => {
-    const pictureList = pictures.querySelectorAll('.picture');
+    const pictureList = pictures.querySelectorAll('.picture__img');
     return Array.from(pictureList).indexOf(picture);
   };
-
 
   const onItemOpen = (evt) => {
     window.picture.socialComments.textContent = '';
 
-    const ChoosenPictureElement = evt.target.closest('.picture');
+    const ChoosenPictureElement = evt.target.closest('.picture__img');
     if (ChoosenPictureElement) {
       const pictureId = indexPictureImage(ChoosenPictureElement);
       document.querySelector('body').classList.add('modal-open');
 
       showBigPicture(pictureId);
+    }
+  };
+
+  const onFilterItemOpenClick = (evt) => {
+    window.picture.socialComments.textContent = '';
+
+    const ChoosenPictureElement = evt.target.closest('.picture__img');
+    if (ChoosenPictureElement) {
+      const pictureId = indexPictureImage(ChoosenPictureElement);
+      document.querySelector('body').classList.add('modal-open');
+
+      showFilterBigPictureClick(pictureId);
     }
   };
 
@@ -63,6 +86,7 @@
     onItemOpen: onItemOpen,
     closeItems: closeItems,
     buttonPictureItems: buttonPictureItems,
+    onFilterItemOpenClick: onFilterItemOpenClick,
   };
 
 })();

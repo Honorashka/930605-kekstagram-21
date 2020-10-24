@@ -7,6 +7,7 @@
     OK: 200,
   };
 
+
   window.load = function (onSuccess, onError) {
     const xhr = new XMLHttpRequest();
     xhr.responseType = 'json';
@@ -35,6 +36,5 @@
     xhr.timeout = TIMEOUT;
 
     xhr.send();
-
   };
 })();
