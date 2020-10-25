@@ -8,11 +8,14 @@
   const socialCaption = document.querySelector('.social__caption');
   const buttonPictureItems = document.querySelector('#picture-cancel');
   const pictures = document.querySelector('.pictures');
+  const commentsLoader = document.querySelector('.comments-loader');
+  const socialComments = document.querySelector('.social__comments');
 
   // Функция для отображения
 
-  const showBigPicture = (id) => {
-    const picture = window.load.dataServerArr[id];
+  const showBigPicture = (data, id) => {
+    const picture = data[id];
+    // const picture = elemets[id];
 
     bigPictureImg.src = picture.url;
     bigPictureLikes.textContent = picture.likes;
@@ -21,17 +24,38 @@
     window.picture.renderComments(picture.comments);
     bigPicture.classList.remove('hidden');
 
-  };
+    commentsLoader.classList.remove('hidden');
 
-  const showFilterBigPictureClick = (id) => {
-    const picture = window.filter.preparedPosts[id];
+    let commentsArray = [];
+    commentsArray = picture.comments;
 
-    bigPictureImg.src = picture.url;
-    bigPictureLikes.textContent = picture.likes;
-    bigPictureComments.textContent = picture.comments.length;
-    socialCaption.textContent = picture.description;
-    window.picture.renderComments(picture.comments);
-    bigPicture.classList.remove('hidden');
+    const showComments = (quantity, elements) => {
+      for (let i = 0; i < quantity; i++) {
+        elements[i].classList.remove('hidden');
+      }
+    };
+
+    const allComments = socialComments.querySelectorAll('.social__comment');
+    let countShowComment = 5;
+
+    const moreComments = (quantity, array, newArray) => {
+      if (quantity < array.length) {
+        showComments(quantity, newArray);
+        commentsLoader.classList.remove('hidden');
+      } else {
+        showComments(array.length, newArray);
+        commentsLoader.classList.add('hidden');
+      }
+    };
+
+    moreComments(countShowComment, allComments, allComments);
+
+    const moreLoadComments = () => {
+      countShowComment = countShowComment + 5;
+      moreComments(countShowComment, commentsArray, allComments);
+    };
+
+    commentsLoader.addEventListener('click', moreLoadComments);
 
   };
 
@@ -39,7 +63,6 @@
 
   const hiddenComment = () => {
     document.querySelector('.social__comment-count').classList.add('hidden');
-    document.querySelector('.comments-loader').classList.add('hidden');
   };
 
   hiddenComment();
@@ -58,19 +81,25 @@
       const pictureId = indexPictureImage(ChoosenPictureElement);
       document.querySelector('body').classList.add('modal-open');
 
-      showBigPicture(pictureId);
+      const dataPost = window.load.dataServerArr;
+
+      showBigPicture(dataPost, pictureId);
     }
   };
 
   const onFilterItemOpenClick = (evt) => {
     window.picture.socialComments.textContent = '';
 
+
     const ChoosenPictureElement = evt.target.closest('.picture__img');
     if (ChoosenPictureElement) {
       const pictureId = indexPictureImage(ChoosenPictureElement);
       document.querySelector('body').classList.add('modal-open');
 
-      showFilterBigPictureClick(pictureId);
+      const dataPost = window.filter.preparedPosts;
+
+      showBigPicture(dataPost, pictureId);
+
     }
   };
 

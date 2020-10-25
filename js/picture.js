@@ -20,6 +20,7 @@
       commentBlock.querySelector('.social__picture').alt = comment.name;
       commentBlock.querySelector('.social__text').textContent = comment.message;
       socialParentsComments.appendChild(commentBlock);
+      commentBlock.classList.add('hidden');
     });
   };
 
