@@ -106,7 +106,6 @@ const closeItems = () => {
 
   window.picture.socialComments.textContent = '';
   window.picture.pictureNode.removeEventListener('keydown', window.button.onButtonEscapeItem);
-  window.picture.pictureNode.removeEventListener('click', onItemOpen);
 };
 
 window.preview = {
