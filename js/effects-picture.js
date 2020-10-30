@@ -1,16 +1,50 @@
 'use strict';
 
-// Оживление ползунка для изменения эффекта + фильтры. Реализация не закончена, нужно будет доделать ползунок и изменение уровень эффекта
-
+const FILE_TYPES = ['gif', 'jpg', 'jpeg', 'png'];
+const effectLevel = document.querySelector('.effect-level');
 const effectPreview = document.querySelectorAll('.effects__radio');
 const imgUploadPreview = document.querySelector(`.img-upload__preview`).querySelector('img');
-const effectLevelPin = document.querySelector('.effect-level__pin');
-const effectLevelDepth = document.querySelector('.effect-level__depth');
-const effectLevelLine = document.querySelector('.effect-level__line');
-const effectLevel = document.querySelector('.effect-level');
+const effectLevelLine = effectLevel.querySelector('.effect-level__line');
+const effectLevelPin = effectLevelLine.querySelector('.effect-level__pin');
+const effectLevelDepth = effectLevelLine.querySelector('.effect-level__depth');
 const uploadCancel = document.querySelector('#upload-cancel');
 const uploadFile = document.querySelector('#upload-file');
 const uploadOverlay = document.querySelector('.img-upload__overlay');
+const fileChooser = document.querySelector('.img-upload__start input[type=file]');
+
+fileChooser.addEventListener('change', function () {
+  const file = fileChooser.files[0];
+  const fileName = file.name.toLowerCase();
+
+  const matches = FILE_TYPES.some(function (it) {
+    return fileName.endsWith(it);
+  });
+
+  if (matches) {
+    const reader = new FileReader();
+
+    reader.addEventListener('load', function () {
+      imgUploadPreview.src = reader.result;
+
+    });
+
+    reader.readAsDataURL(file);
+  }
+});
+
+const openEditWindow = () => {
+  uploadOverlay.classList.remove('hidden');
+  document.querySelector('body').classList.add('modal-open');
+  document.addEventListener('keydown', window.button.onButtonEscapeCancel);
+};
+
+const closeEditWindow = () => {
+  uploadOverlay.classList.add('hidden');
+  document.querySelector('body').classList.remove('modal-open');
+  uploadFile.value = '';
+  imgUploadPreview.className = 'effects__preview--none';
+  resetChangeEffectDepth();
+};
 
 const filterPhotoClass = [
   'effects__preview--none',
@@ -128,22 +162,6 @@ const onMouseEffect = (evt) => {
 };
 
 effectLevelPin.addEventListener('mousedown', onMouseEffect);
-
-// Открытие и закрытие окна редактирования фотографии + с помощью ESC
-
-const openEditWindow = () => {
-  uploadOverlay.classList.remove('hidden');
-  document.querySelector('body').classList.add('modal-open');
-  document.addEventListener('keydown', window.button.onButtonEscapeCancel);
-};
-
-const closeEditWindow = () => {
-  uploadOverlay.classList.add('hidden');
-  document.querySelector('body').classList.remove('modal-open');
-  uploadFile.value = '';
-  imgUploadPreview.className = 'effects__preview--none';
-  resetChangeEffectDepth();
-};
 
 
 window.effects = {
