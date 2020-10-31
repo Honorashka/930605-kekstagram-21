@@ -12,6 +12,32 @@ const uploadFile = document.querySelector('#upload-file');
 const uploadOverlay = document.querySelector('.img-upload__overlay');
 const fileChooser = document.querySelector('.img-upload__start input[type=file]');
 
+
+const openEditWindow = () => {
+  uploadOverlay.classList.remove('hidden');
+  document.querySelector('body').classList.add('modal-open');
+  document.addEventListener('keydown', window.button.onButtonEscapeCancel);
+  window.validation.inputHashTags.addEventListener('input', window.validation.onInputHashTags);
+  window.form.uploadForm.addEventListener('submit', window.form.submitHundler);
+  uploadFile.removeEventListener('change', window.effects.openEditWindow);
+
+};
+
+const closeEditWindow = () => {
+  uploadOverlay.classList.add('hidden');
+  document.querySelector('body').classList.remove('modal-open');
+  uploadFile.value = '';
+  window.validation.inputHashTags.value = '';
+  window.validation.textAreaComment.value = '';
+  imgUploadPreview.className = 'effects__preview--none';
+  imgUploadPreview.src = '';
+  resetChangeEffectDepth();
+  window.validation.inputHashTags.removeEventListener('input', window.validation.onInputHashTags);
+  window.form.uploadForm.removeEventListener('submit', window.form.submitHundler);
+  document.removeEventListener('keydown', window.button.onButtonEscapeCancel);
+  uploadFile.addEventListener('change', window.effects.openEditWindow);
+};
+
 fileChooser.addEventListener('change', function () {
   const file = fileChooser.files[0];
   const fileName = file.name.toLowerCase();
@@ -20,31 +46,23 @@ fileChooser.addEventListener('change', function () {
     return fileName.endsWith(it);
   });
 
-  if (matches) {
-    const reader = new FileReader();
+  const reader = new FileReader();
 
+  if (matches) {
     reader.addEventListener('load', function () {
       imgUploadPreview.src = reader.result;
-
     });
 
     reader.readAsDataURL(file);
+  } else {
+    reader.onerror = (function () {
+      uploadFile.removeEventListener('change', window.effects.openEditWindow);
+      window.form.onUploadError();
+    }());
+    reader.readAsText(file);
   }
+  uploadFile.addEventListener('change', window.effects.openEditWindow);
 });
-
-const openEditWindow = () => {
-  uploadOverlay.classList.remove('hidden');
-  document.querySelector('body').classList.add('modal-open');
-  document.addEventListener('keydown', window.button.onButtonEscapeCancel);
-};
-
-const closeEditWindow = () => {
-  uploadOverlay.classList.add('hidden');
-  document.querySelector('body').classList.remove('modal-open');
-  uploadFile.value = '';
-  imgUploadPreview.className = 'effects__preview--none';
-  resetChangeEffectDepth();
-};
 
 const filterPhotoClass = [
   'effects__preview--none',
@@ -55,7 +73,7 @@ const filterPhotoClass = [
   'effects__preview--heat'
 ];
 
-const filterPhotoStyle = [
+const filterPhotoStyles = [
   'none',
   'grayscale(1)',
   'sepia(1)',
@@ -73,7 +91,7 @@ const onClickEffectHandler = (effectItem, filterClass, filterEffect) => {
 };
 
 for (let i = 0; i < effectPreview.length; i++) {
-  onClickEffectHandler(effectPreview[i], filterPhotoClass[i], filterPhotoStyle[i]);
+  onClickEffectHandler(effectPreview[i], filterPhotoClass[i], filterPhotoStyles[i]);
   effectLevel.classList.add('hidden');
 }
 
@@ -170,5 +188,5 @@ window.effects = {
   uploadFile: uploadFile,
   uploadOverlay: uploadOverlay,
   openEditWindow: openEditWindow,
-  closeEditWindow: closeEditWindow
+  closeEditWindow: closeEditWindow,
 };

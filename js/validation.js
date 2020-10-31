@@ -6,7 +6,7 @@ const inputHashTags = document.querySelector('.text__hashtags');
 const textAreaComment = document.querySelector('.text__description');
 
 const onInputHashTags = () => {
-  const hashtags = inputHashTags.value.split('');
+  const hashtags = inputHashTags.value.split(' ');
   for (let i = 0; i < hashtags.length; i++) {
     const re = /^#[\w\d]*$/;
     re.test(hashtags[i]);
@@ -25,9 +25,8 @@ const onInputHashTags = () => {
   inputHashTags.reportValidity();
 };
 
-inputHashTags.addEventListener('input', onInputHashTags);
-
 window.validation = {
   inputHashTags: inputHashTags,
+  onInputHashTags: onInputHashTags,
   textAreaComment: textAreaComment,
 };

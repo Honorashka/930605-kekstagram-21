@@ -1,5 +1,6 @@
 'use strict';
 
+
 window.effects.uploadFile.addEventListener('change', window.effects.openEditWindow);
 window.effects.uploadCancel.addEventListener('click', window.effects.closeEditWindow);
 window.picture.pictureNode.addEventListener('click', window.preview.onItemOpen);
