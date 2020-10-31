@@ -54,6 +54,5 @@ const submitHundler = (evt) => {
 
 window.form = {
   submitHundler: submitHundler,
-  onUploadError: onUploadError,
-  uploadForm: form,
+  onUploadError: onUploadError
 };
