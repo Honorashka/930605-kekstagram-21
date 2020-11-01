@@ -13,6 +13,24 @@ const uploadOverlay = document.querySelector('.img-upload__overlay');
 const fileChooser = document.querySelector('.img-upload__start input[type=file]');
 
 
+const filterPhotoClass = [
+  'effects__preview--none',
+  'effects__preview--chrome',
+  'effects__preview--sepia',
+  'effects__preview--marvin',
+  'effects__preview--phobos',
+  'effects__preview--heat'
+];
+
+const filterPhotoStyles = [
+  'none',
+  'grayscale(1)',
+  'sepia(1)',
+  'invert(100%)',
+  'blur(3px)',
+  'brightness(3)'
+];
+
 const openEditWindow = () => {
   uploadOverlay.classList.remove('hidden');
   document.querySelector('body').classList.add('modal-open');
@@ -20,6 +38,10 @@ const openEditWindow = () => {
   window.validation.inputHashTags.addEventListener('input', window.validation.onInputHashTags);
   window.form.uploadForm.addEventListener('submit', window.form.submitHundler);
   uploadFile.removeEventListener('change', window.effects.openEditWindow);
+  window.adjustment.smallButtonScale.addEventListener(`click`, window.adjustment.setScaleValueDown);
+  window.adjustment.bigButtonScale.addEventListener(`click`, window.adjustment.setScaleValueUp);
+  uploadCancel.addEventListener('click', closeEditWindow);
+  window.picture.pictureNode.addEventListener('keydown', window.button.onButtonEscapeItem);
 
 };
 
@@ -36,6 +58,8 @@ const closeEditWindow = () => {
   window.form.uploadForm.removeEventListener('submit', window.form.submitHundler);
   document.removeEventListener('keydown', window.button.onButtonEscapeCancel);
   uploadFile.addEventListener('change', window.effects.openEditWindow);
+  window.adjustment.smallButtonScale.removeEventListener(`click`, window.adjustment.setScaleValueDown);
+  window.adjustment.bigButtonScale.removeEventListener(`click`, window.adjustment.setScaleValueUp);
 };
 
 fileChooser.addEventListener('change', function () {
@@ -63,24 +87,6 @@ fileChooser.addEventListener('change', function () {
   }
   uploadFile.addEventListener('change', window.effects.openEditWindow);
 });
-
-const filterPhotoClass = [
-  'effects__preview--none',
-  'effects__preview--chrome',
-  'effects__preview--sepia',
-  'effects__preview--marvin',
-  'effects__preview--phobos',
-  'effects__preview--heat'
-];
-
-const filterPhotoStyles = [
-  'none',
-  'grayscale(1)',
-  'sepia(1)',
-  'invert(100%)',
-  'blur(3px)',
-  'brightness(3)'
-];
 
 const onClickEffectHandler = (effectItem, filterClass, filterEffect) => {
   effectItem.addEventListener('click', function () {

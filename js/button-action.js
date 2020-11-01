@@ -14,7 +14,7 @@ const onButtonEscapeItem = (evt) => {
   }
 };
 
-const buttonEnter = (evt, data) => {
+const onButtonEnter = (evt, data) => {
   if (evt.target.className === 'picture') {
     const cardImgPreview = evt.target.querySelector('.picture');
     if (evt.keyCode === BUTTON_ENTER && cardImgPreview) {
@@ -27,11 +27,11 @@ const buttonEnter = (evt, data) => {
 };
 
 const onButtonEnterItem = (evt) => {
-  buttonEnter(evt, window.load.dataServerArr);
+  onButtonEnter(evt, window.load.dataServerArr);
 };
 
 const onButtonFilterEnterItem = (evt) => {
-  buttonEnter(evt, window.filter.preparedPosts);
+  onButtonEnter(evt, window.filter.preparedPosts);
 };
 
 const onButtonEscapeCancel = (evt) => {

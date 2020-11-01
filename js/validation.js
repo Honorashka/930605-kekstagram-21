@@ -18,8 +18,12 @@ const onInputHashTags = () => {
       inputHashTags.setCustomValidity('Удалите ' + (hashtags[i].length - window.hashtag.MAX_LENGHT_HASHTAG) + ' симв.');
     } else if (hashtags.length >= 5) {
       inputHashTags.setCustomValidity('Можно указывать не более 5 хэштегов');
-    } else if (String(hashtags[i]).toLowerCase() === String(hashtags[i - 1]).toLowerCase()) {
-      inputHashTags.setCustomValidity('Хэштеги не должны повторятся');
+    } else if (i > 0) {
+      for (let j = 1; j <= i; j++) {
+        if (String(hashtags[i]).toLowerCase() === String(hashtags[i - j]).toLowerCase()) {
+          inputHashTags.setCustomValidity('Хэштеги не должны повторятся');
+        }
+      }
     } else {
       inputHashTags.setCustomValidity('');
     }

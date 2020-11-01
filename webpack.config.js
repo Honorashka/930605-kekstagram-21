@@ -11,9 +11,9 @@ module.exports = {
     './js/filter.js',
     './js/button-action.js',
     './js/form.js',
+    './js/scale-picture.js',
     './js/effects-picture.js',
     './js/main.js',
-    './js/scale-picture.js',
     './js/validation.js',
   ],
   output: {

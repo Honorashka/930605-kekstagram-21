@@ -1,9 +1,9 @@
 'use strict';
 
 const pictureFilter = document.querySelector('.img-filters');
-const postFilterDefaultButton = document.querySelector('#filter-default');
-const postFilterRandomButton = document.querySelector('#filter-random');
-const postFilterDiscussedButton = document.querySelector('#filter-discussed');
+const postFilterDefaultButton = pictureFilter.querySelector('#filter-default');
+const postFilterRandomButton = pictureFilter.querySelector('#filter-random');
+const postFilterDiscussedButton = pictureFilter.querySelector('#filter-discussed');
 const buttonFilter = pictureFilter.querySelectorAll('.img-filters__button');
 
 pictureFilter.classList.remove('img-filters--inactive');
