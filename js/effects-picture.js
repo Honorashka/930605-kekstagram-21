@@ -12,39 +12,6 @@ const uploadFile = document.querySelector('#upload-file');
 const uploadOverlay = document.querySelector('.img-upload__overlay');
 const fileChooser = document.querySelector('.img-upload__start input[type=file]');
 
-fileChooser.addEventListener('change', function () {
-  const file = fileChooser.files[0];
-  const fileName = file.name.toLowerCase();
-
-  const matches = FILE_TYPES.some(function (it) {
-    return fileName.endsWith(it);
-  });
-
-  if (matches) {
-    const reader = new FileReader();
-
-    reader.addEventListener('load', function () {
-      imgUploadPreview.src = reader.result;
-
-    });
-
-    reader.readAsDataURL(file);
-  }
-});
-
-const openEditWindow = () => {
-  uploadOverlay.classList.remove('hidden');
-  document.querySelector('body').classList.add('modal-open');
-  document.addEventListener('keydown', window.button.onButtonEscapeCancel);
-};
-
-const closeEditWindow = () => {
-  uploadOverlay.classList.add('hidden');
-  document.querySelector('body').classList.remove('modal-open');
-  uploadFile.value = '';
-  imgUploadPreview.className = 'effects__preview--none';
-  resetChangeEffectDepth();
-};
 
 const filterPhotoClass = [
   'effects__preview--none',
@@ -55,7 +22,7 @@ const filterPhotoClass = [
   'effects__preview--heat'
 ];
 
-const filterPhotoStyle = [
+const filterPhotoStyles = [
   'none',
   'grayscale(1)',
   'sepia(1)',
@@ -63,6 +30,63 @@ const filterPhotoStyle = [
   'blur(3px)',
   'brightness(3)'
 ];
+
+const openEditWindow = () => {
+  uploadOverlay.classList.remove('hidden');
+  document.querySelector('body').classList.add('modal-open');
+  document.addEventListener('keydown', window.button.onButtonEscapeCancel);
+  window.validation.inputHashTags.addEventListener('input', window.validation.onInputHashTags);
+  window.form.uploadForm.addEventListener('submit', window.form.submitHundler);
+  uploadFile.removeEventListener('change', window.effects.openEditWindow);
+  window.adjustment.smallButtonScale.addEventListener(`click`, window.adjustment.setScaleValueDown);
+  window.adjustment.bigButtonScale.addEventListener(`click`, window.adjustment.setScaleValueUp);
+  uploadCancel.addEventListener('click', closeEditWindow);
+  window.picture.pictureNode.addEventListener('keydown', window.button.onButtonEscapeItem);
+
+};
+
+const closeEditWindow = () => {
+  uploadOverlay.classList.add('hidden');
+  document.querySelector('body').classList.remove('modal-open');
+  uploadFile.value = '';
+  window.validation.inputHashTags.value = '';
+  window.validation.textAreaComment.value = '';
+  imgUploadPreview.className = 'effects__preview--none';
+  imgUploadPreview.src = '';
+  resetChangeEffectDepth();
+  window.validation.inputHashTags.removeEventListener('input', window.validation.onInputHashTags);
+  window.form.uploadForm.removeEventListener('submit', window.form.submitHundler);
+  document.removeEventListener('keydown', window.button.onButtonEscapeCancel);
+  uploadFile.addEventListener('change', window.effects.openEditWindow);
+  window.adjustment.smallButtonScale.removeEventListener(`click`, window.adjustment.setScaleValueDown);
+  window.adjustment.bigButtonScale.removeEventListener(`click`, window.adjustment.setScaleValueUp);
+};
+
+fileChooser.addEventListener('change', function () {
+  const file = fileChooser.files[0];
+  const fileName = file.name.toLowerCase();
+
+  const matches = FILE_TYPES.some(function (it) {
+    return fileName.endsWith(it);
+  });
+
+  const reader = new FileReader();
+
+  if (matches) {
+    reader.addEventListener('load', function () {
+      imgUploadPreview.src = reader.result;
+    });
+
+    reader.readAsDataURL(file);
+  } else {
+    reader.onerror = (function () {
+      uploadFile.removeEventListener('change', window.effects.openEditWindow);
+      window.form.onUploadError();
+    }());
+    reader.readAsText(file);
+  }
+  uploadFile.addEventListener('change', window.effects.openEditWindow);
+});
 
 const onClickEffectHandler = (effectItem, filterClass, filterEffect) => {
   effectItem.addEventListener('click', function () {
@@ -73,7 +97,7 @@ const onClickEffectHandler = (effectItem, filterClass, filterEffect) => {
 };
 
 for (let i = 0; i < effectPreview.length; i++) {
-  onClickEffectHandler(effectPreview[i], filterPhotoClass[i], filterPhotoStyle[i]);
+  onClickEffectHandler(effectPreview[i], filterPhotoClass[i], filterPhotoStyles[i]);
   effectLevel.classList.add('hidden');
 }
 
@@ -170,5 +194,5 @@ window.effects = {
   uploadFile: uploadFile,
   uploadOverlay: uploadOverlay,
   openEditWindow: openEditWindow,
-  closeEditWindow: closeEditWindow
+  closeEditWindow: closeEditWindow,
 };

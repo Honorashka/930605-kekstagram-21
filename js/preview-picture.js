@@ -2,13 +2,13 @@
 
 const bigPicture = document.querySelector('.big-picture');
 const bigPictureImg = document.querySelector('.big-picture__img').querySelector('img');
-const bigPictureLikes = document.querySelector('.likes-count');
-const bigPictureComments = document.querySelector('.comments-count');
-const socialCaption = document.querySelector('.social__caption');
-const buttonPictureItems = document.querySelector('#picture-cancel');
+const bigPictureLikes = bigPicture.querySelector('.likes-count');
+const bigPictureComments = bigPicture.querySelector('.comments-count');
+const socialCaption = bigPicture.querySelector('.social__caption');
+const buttonPictureItems = bigPicture.querySelector('#picture-cancel');
 const pictures = document.querySelector('.pictures');
-const commentsLoader = document.querySelector('.comments-loader');
-const socialComments = document.querySelector('.social__comments');
+const commentsLoader = bigPicture.querySelector('.comments-loader');
+const socialComments = bigPicture.querySelector('.social__comments');
 
 // Функция для отображения
 
@@ -73,8 +73,12 @@ const indexPictureImage = (picture) => {
 
 const onItemOpen = (evt) => {
   window.picture.socialComments.textContent = '';
+  window.preview.buttonPictureItems.addEventListener('click', closeItems);
+  window.picture.pictureNode.addEventListener('keydown', window.button.onButtonEscapeItem);
+  window.picture.pictureNode.removeEventListener('keydown', window.button.onButtonEnterItem);
 
   const ChoosenPictureElement = evt.target.closest('.picture');
+
   if (ChoosenPictureElement) {
     const pictureId = indexPictureImage(ChoosenPictureElement);
     document.querySelector('body').classList.add('modal-open');
@@ -88,6 +92,10 @@ const onItemOpen = (evt) => {
 
 const onFilterItemOpenClick = (evt) => {
   window.picture.socialComments.textContent = '';
+
+  window.preview.buttonPictureItems.addEventListener('click', closeItems);
+  window.picture.pictureNode.addEventListener('keydown', window.button.onButtonEscapeItem);
+  window.picture.pictureNode.removeEventListener('keydown', window.button.onButtonEnterItem);
 
   const ChoosenPictureElement = evt.target.closest('.picture');
   if (ChoosenPictureElement) {
@@ -105,7 +113,9 @@ const closeItems = () => {
   document.querySelector('body').classList.remove('modal-open');
 
   window.picture.socialComments.textContent = '';
+  window.preview.buttonPictureItems.removeEventListener('click', closeItems);
   window.picture.pictureNode.removeEventListener('keydown', window.button.onButtonEscapeItem);
+  window.picture.pictureNode.addEventListener('keydown', window.button.onButtonEnterItem);
 };
 
 window.preview = {

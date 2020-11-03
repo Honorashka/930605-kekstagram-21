@@ -29,6 +29,9 @@ const setScaleValueUp = () => {
   setScaleValue(parseInt(currentValue, 10) + window.scale.STEP);
 };
 
-smallButtonScale.addEventListener(`click`, setScaleValueDown);
-
-bigButtonScale.addEventListener(`click`, setScaleValueUp);
+window.adjustment = {
+  smallButtonScale: smallButtonScale,
+  bigButtonScale: bigButtonScale,
+  setScaleValueDown: setScaleValueDown,
+  setScaleValueUp: setScaleValueUp
+};

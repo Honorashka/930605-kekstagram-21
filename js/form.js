@@ -52,4 +52,8 @@ const submitHundler = (evt) => {
   window.effects.closeEditWindow();
 };
 
-form.addEventListener('submit', submitHundler);
+window.form = {
+  submitHundler: submitHundler,
+  onUploadError: onUploadError,
+  uploadForm: form,
+};

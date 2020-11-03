@@ -6,7 +6,7 @@ const inputHashTags = document.querySelector('.text__hashtags');
 const textAreaComment = document.querySelector('.text__description');
 
 const onInputHashTags = () => {
-  const hashtags = inputHashTags.value.split('');
+  const hashtags = inputHashTags.value.split(' ');
   for (let i = 0; i < hashtags.length; i++) {
     const re = /^#[\w\d]*$/;
     re.test(hashtags[i]);
@@ -18,6 +18,12 @@ const onInputHashTags = () => {
       inputHashTags.setCustomValidity('Удалите ' + (hashtags[i].length - window.hashtag.MAX_LENGHT_HASHTAG) + ' симв.');
     } else if (hashtags.length >= 5) {
       inputHashTags.setCustomValidity('Можно указывать не более 5 хэштегов');
+    } else if (i > 0) {
+      for (let j = 1; j <= i; j++) {
+        if (String(hashtags[i]).toLowerCase() === String(hashtags[i - j]).toLowerCase()) {
+          inputHashTags.setCustomValidity('Хэштеги не должны повторятся');
+        }
+      }
     } else {
       inputHashTags.setCustomValidity('');
     }
@@ -25,9 +31,8 @@ const onInputHashTags = () => {
   inputHashTags.reportValidity();
 };
 
-inputHashTags.addEventListener('input', onInputHashTags);
-
 window.validation = {
   inputHashTags: inputHashTags,
+  onInputHashTags: onInputHashTags,
   textAreaComment: textAreaComment,
 };
