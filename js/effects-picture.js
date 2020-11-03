@@ -22,15 +22,6 @@ const filterPhotoClass = [
   'effects__preview--heat'
 ];
 
-const filterPhotoStyles = [
-  'none',
-  'grayscale(1)',
-  'sepia(1)',
-  'invert(100%)',
-  'blur(3px)',
-  'brightness(3)'
-];
-
 const openEditWindow = () => {
   uploadOverlay.classList.remove('hidden');
   document.querySelector('body').classList.add('modal-open');
@@ -88,16 +79,16 @@ fileChooser.addEventListener('change', function () {
   uploadFile.addEventListener('change', window.effects.openEditWindow);
 });
 
-const onClickEffectHandler = (effectItem, filterClass, filterEffect) => {
+const onClickEffectHandler = (effectItem, filterClass) => {
   effectItem.addEventListener('click', function () {
     imgUploadPreview.className = filterClass;
-    imgUploadPreview.style.filter = filterEffect;
+    changeEffectDepth();
     resetChangeEffectDepth();
   });
 };
 
 for (let i = 0; i < effectPreview.length; i++) {
-  onClickEffectHandler(effectPreview[i], filterPhotoClass[i], filterPhotoStyles[i]);
+  onClickEffectHandler(effectPreview[i], filterPhotoClass[i]);
   effectLevel.classList.add('hidden');
 }
 
