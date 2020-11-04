@@ -3,8 +3,7 @@ const path = require('path');
 module.exports = {
   entry: [
     './js/data.js',
-    './js/load.js',
-    './js/upload.js',
+    './js/server.js',
     './js/picture.js',
     './js/preview-picture.js',
     './js/debounce.js',

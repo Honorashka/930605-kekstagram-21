@@ -33,5 +33,6 @@ window.adjustment = {
   smallButtonScale: smallButtonScale,
   bigButtonScale: bigButtonScale,
   setScaleValueDown: setScaleValueDown,
-  setScaleValueUp: setScaleValueUp
+  setScaleValueUp: setScaleValueUp,
+  scaleValue: scaleValue,
 };

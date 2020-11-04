@@ -2,11 +2,11 @@
 
 // Открытие и закртыие окон с помощью клавиш
 
-const BUTTON_ESCAPE = 27;
-const BUTTON_ENTER = 13;
+const BUTTON_ESCAPE = 'Escape';
+const BUTTON_ENTER = 'Enter';
 
 const onButtonEscapeItem = (evt) => {
-  if (evt.keyCode === BUTTON_ESCAPE) {
+  if (evt.key === BUTTON_ESCAPE) {
     window.preview.bigPicture.classList.add('hidden');
     document.querySelector('body').classList.remove('modal-open');
 
@@ -17,7 +17,7 @@ const onButtonEscapeItem = (evt) => {
 const onButtonEnter = (evt, data) => {
   if (evt.target.className === 'picture') {
     const cardImgPreview = evt.target.querySelector('.picture');
-    if (evt.keyCode === BUTTON_ENTER && cardImgPreview) {
+    if (evt.key === BUTTON_ENTER && cardImgPreview) {
       const cardId = window.preview.indexPictureImage(cardImgPreview);
       const dataPost = data;
       window.preview.showBigPicture(dataPost, cardId);
@@ -35,7 +35,7 @@ const onButtonFilterEnterItem = (evt) => {
 };
 
 const onButtonEscapeCancel = (evt) => {
-  if (evt.keyCode === window.button.BUTTON_ESCAPE && document.activeElement !== window.validation.inputHashTags && document.activeElement !== window.validation.textAreaComment) {
+  if (evt.key === window.button.BUTTON_ESCAPE && document.activeElement !== window.validation.inputHashTags && document.activeElement !== window.validation.textAreaComment) {
     window.effects.closeEditWindow();
   }
 };

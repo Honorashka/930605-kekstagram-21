@@ -54,7 +54,8 @@ const errorHundler = function (errorMessage) {
   document.body.insertAdjacentElement('afterbegin', node);
 };
 
-window.load(successHundler, errorHundler);
+window.server.load(successHundler, errorHundler);
+
 
 window.picture = {
   renderComments,

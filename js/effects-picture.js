@@ -44,6 +44,8 @@ const closeEditWindow = () => {
   window.validation.textAreaComment.value = '';
   imgUploadPreview.className = 'effects__preview--none';
   imgUploadPreview.src = '';
+  imgUploadPreview.style.transform = `scale(1)`;
+  window.adjustment.scaleValue.value = `100%`;
   resetChangeEffectDepth();
   window.validation.inputHashTags.removeEventListener('input', window.validation.onInputHashTags);
   window.form.uploadForm.removeEventListener('submit', window.form.submitHundler);
